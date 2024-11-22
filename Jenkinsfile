@@ -2,11 +2,15 @@ pipeline {
     agent {
         label 'AGENT-1'
     }
-    options {
-        timeout(time: 10, unit:'SECONDS')
+    options{
+        timeout(time: 10, unit: 'MINUTES')
         disableConcurrentBuilds()
-        //retry(3)
+        //retry(1)
     }
+    environment {
+        DEBUG = 'true'
+    }
+
     parameters {
         string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
         text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
@@ -27,13 +31,17 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'echo This is test'
+                sh 'env'
             }
         }
         stage('Deploy') {
+            when {
+                expression { env.GIT_BRANCH != "origin/main" }
+            }
             steps {
 
                     sh 'echo This is deploy'
-                    error 'pipline failed'
+                    //error 'pipeline failed'
 
             }
         }
@@ -46,6 +54,19 @@ pipeline {
                 echo "Password: ${params.PASSWORD}"  
             }
         }
+        stage('Approval'){
+            input {
+                message "Should we continue?"
+                ok "Yes, we should."
+                submitter "alice,bob"
+                parameters {
+                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+                }
+            }
+        //     steps {
+        //         echo "Hello, ${PERSON}, nice to meet you."
+        //     }
+        // }
     }
 
     post {
