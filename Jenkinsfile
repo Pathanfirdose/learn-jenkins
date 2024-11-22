@@ -7,9 +7,9 @@ pipeline {
         disableConcurrentBuilds()
         //retry(1)
     }
-    environment {
-        DEBUG = 'true'
-    }
+    // environment {
+    //     DEBUG = 'true'
+    // }
 
     parameters {
         string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
