@@ -21,7 +21,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'echo This is Build'
-                //sh 'sleep 10'
+                sh 'sleep 10'
             }
         }
         stage('Test') {
@@ -37,7 +37,7 @@ pipeline {
 
             }
         }
-        stage('Print Params'){
+        stage('Print Params') {
             steps{
                 echo "Hello ${params.PERSON}"
                 echo "Biography: ${params.BIOGRAPHY}"
