@@ -7,6 +7,9 @@ pipeline {
         disableConcurrentBuilds()
         //retry(1)
     }
+    environment {
+        DEBUG = 'true'
+    }
     parameters {
         string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
 
@@ -32,7 +35,7 @@ pipeline {
         }
         stage('Deploy') {
             when {
-                expression { env.GIT_BRANCH != "origin/main" }
+                expression { env.GIT_BRANCH != 'origin/main' }
             }
             steps {
                 sh 'echo this is deploy'
